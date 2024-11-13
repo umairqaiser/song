@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+
+
+import { useEffect, useRef, useState } from 'react';
 import artistInfo from "./assets/artistInfo.svg";
 import mission from "./assets/mission.svg";
 import goals from "./assets/goals.svg";
@@ -8,10 +10,10 @@ import dictionary from "./assets/dictionary.svg";
 import search from "./assets/search.svg";
 import logo from "./assets/logo.svg";
 import prompt from "./assets/prompt.svg";
-import code from "./assets/code.svg";
 import tiktok from "./assets/tiktok.svg";
 import instagram from "./assets/instagram.svg";
-import twitter from "./assets/twitter.svg";
+import twitter from "./assets/twitter.png";
+import coding from "./assets/coding.svg";
 
 function Navbar() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -175,90 +177,105 @@ function IntroductionSection() {
   );
 }
 
+
+
+
 function FeatureSection() {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const section = sectionRef.current;
+      if (section) {
+        const scrollTop = window.scrollY;
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+
+        // Calculate scroll progress as a percentage
+        const progress = ((scrollTop - sectionTop) / (sectionHeight - window.innerHeight)) * 10;
+        setScrollProgress(Math.max(0, Math.min(progress, 50))); // Clamp between 0 and 100
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section className="bg-black text-white px-4 md:px-8 py-10 md:py-16">
-      <h2 className="text-[32px] sm:text-[40px] md:text-[56px] leading-tight text-center font-bold mb-8 md:mb-12" style={{ fontFamily: "Plus Jakarta Sans", color: "white" }}>
-        The <span className="text-purple-500 italic">LyricLab</span>
-      </h2>
-
-      {/* AI-Driven Rhyme Assistant Section */}
-      <div className="flex flex-col lg:w-full lg:flex-row items-center justify-center gap-6 md:gap-[73px] mb-10 md:mb-16">
-        {/* Left Text Section */}
-        <div className="w-full justify-start lg:w-[501px] lg:text-left">
-          <h3 className="text-xl md:text-2xl font-bold mb-4 text-center">AI-Driven Rhyme Assistant</h3>
-          <p className="text-gray-400">
-            The AI-Driven Rhyme Assistant will be able to intelligently analyze the context of the lyrics being written by the user and provide dynamic and contextually relevant alternative lyric suggestions in the authentic voice of the user. It will be able to provide aid beyond simple phonetic rhyme matches ensuring the suggested rhymes contribute to the coherence and meaning of the lyrics...
-          </p>
-        </div>
-        {/* Right Image Section */}
-        <div className="w-full justify-end lg:w-[492px] flex  lg:justify-end">
-          <img src={assistant} alt="Rhyme Assistant" className="rounded-lg w-full justify-end sm:w-[400px] md:w-[450px] lg:w-[492px] h-auto" />
-        </div>
+    <section ref={sectionRef} className="relative flex items-center bg-black text-white px-4 md:px-8 py-10 md:py-16 min-h-screen">
+      {/* Left Side - Feature Text */}
+      <div className="flex-1 text-center md:text-left">
+        <h3 className="text-[24px] font-bold text-purple-500 mb-4">AI-Driven Rhyme Assistant</h3>
+        <p className="text-sm md:text-base text-gray-200 leading-relaxed">
+          The AI-Driven Rhyme Assistant will be able to intelligently analyse the context of the lyrics being written by the user and provide dynamic and contextually relevant alternative lyric suggestions in the authentic voice of the user. It will be able to provide aid beyond simple phonetic rhyme matches ensuring the suggested rhymes contribute to the coherence and meaning of the lyrics. It will also be able to analyse bars and verses and offer options of changes that will make the syllable count, structure and rhyme scheme to make the lyrics more optimal and refined. It will underline the area of suggestion and once clicked, will take you directly to the suggestion and reason why this alternative is better. The goal of this feature is to accelerate the lyric writing process, reducing potential creative blocks and inspiring continuous output.
+        </p>
       </div>
 
-      {/* Rhyme Dictionary Section */}
-      <div className="flex flex-col lg:flex-row-reverse items-center justify-center gap-6 md:gap-12 mb-10 md:mb-16">
-        {/* Left Text Section */}
-        <div className="w-full lg:w-[501px] text-center lg:text-left">
-          <h3 className="text-xl md:text-2xl font-bold mb-4">AI-Driven Rhyme Dictionary</h3>
-          <p className="text-gray-400">
-            The AI-Driven Rhyme Dictionary will be able to intelligently analyze the context of the lyrics being written by the user and provide dynamic and contextually relevant alternative lyric suggestions in the authentic voice of the user. It will be able to provide aid beyond simple phonetic rhyme matches ensuring the suggested rhymes contribute to the coherence and meaning of the lyrics...
-          </p>
-        </div>
-        {/* Right Image Section */}
-        <div className="w-full lg:w-[492px] flex  lg:justify-start">
-          <img src={dictionary} alt="Dictionary" className="rounded-lg w-full sm:w-[400px] md:w-[450px] lg:w-[492px] h-auto" />
-        </div>
+      {/* Center - Vertical Gradient Line with Moving Dot */}
+      <div className="relative flex flex-col items-center h-[400px] w-[2px] mx-10 bg-gradient-to-b from-blue-400 to-purple-400">
+        <div
+          style={{ top: `${scrollProgress}%` }}
+          className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-500 rounded-full shadow-md"
+        ></div>
       </div>
 
-      {/* AI-Driven Rhyme Search Section */}
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-12 mb-10 md:mb-16">
-        {/* Left Text Section */}
-        <div className="w-full lg:w-[501px] text-center lg:text-left">
-          <h3 className="text-xl md:text-2xl font-bold mb-4">AI-Driven Rhyme Search</h3>
-          <p className="text-gray-400">
-            The AI-Driven Rhyme search will be able to intelligently analyze the context of the lyrics being written by the user and provide dynamic and contextually relevant alternative lyric suggestions in the authentic voice of the user. It will be able to provide aid beyond simple phonetic rhyme matches ensuring the suggested rhymes contribute to the coherence and meaning of the lyrics...
-          </p>
-        </div>
-        {/* Right Image Section */}
-        <div className="w-full lg:w-[492px] flex justify-center lg:justify-end">
-          <img src={search} alt="Search" className="rounded-lg w-full sm:w-[400px] md:w-[450px] lg:w-[492px] h-auto" />
+      {/* Right Side - Assistant Image */}
+      <div className="flex-1 flex justify-center">
+        <div className="w-[300px] md:w-[492px] h-auto">
+          <img src={assistant} alt="Assistant" className="w-full h-auto rounded-lg shadow-lg" />
         </div>
       </div>
-
-      {/* AI-Driven Rhyme Prompt Section */}
-      <div className="flex flex-col lg:flex-row-reverse items-center justify-center gap-6 md:gap-12 mb-10 md:mb-16">
-        {/* Left Text Section */}
-        <div className="w-full lg:w-[501px] text-center lg:text-left">
-          <h3 className="text-xl md:text-2xl font-bold mb-4">AI-Driven Rhyme Prompt</h3>
-          <p className="text-gray-400">
-            The AI-Driven Rhyme Prompt will be able to intelligently analyze the context of the lyrics being written by the user and provide dynamic and contextually relevant alternative lyric suggestions in the authentic voice of the user. It will be able to provide aid beyond simple phonetic rhyme matches ensuring the suggested rhymes contribute to the coherence and meaning of the lyrics...
-          </p>
-        </div>
-        {/* Right Image Section */}
-        <div className="w-full lg:w-[492px] flex justify-center lg:justify-start">
-          <img src={prompt} alt="Prompt" className="rounded-lg w-full sm:w-[400px] md:w-[450px] lg:w-[492px] h-auto" />
-        </div>
-        <button className="bg-gradient-to-r from-blue-400 to-purple-500 text-white flex justify-center  py-4 px-6 md:py-2 md:px-4 rounded-full hover:opacity-90 text-sm md:text-base">
-        Try it Yourself
-      </button>
-      </div>
-      
     </section>
   );
 }
 
 
 
-function CodingSection (){
-return (
-  <section className="bg-black text-white w-full px-4 md:px-8 py-16 flex flex-col md:flex-row items-center gap-8 md:gap-[113px] justify-center">
-  <div className="w-full lg:w-[1152px] flex justify-center lg:justify-center">
-          <img src={code} alt="code" className="rounded-lg w-full  sm:w-[400px] md:w-[450px] lg:w-[1152px] h-auto" />
+
+
+
+
+
+
+
+
+
+
+
+
+function CodingSection() {
+  return (
+    <section className="bg-black text-white w-full px-4 md:px-8 py-16 flex flex-col items-center justify-center">
+      <div
+        className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 mb-10 md:mb-16 p-6 rounded-lg shadow-lg max-w-full md:max-w-[1152px]"
+        style={{
+          background: "linear-gradient(90deg, #3a86ff 0%, #8338ec 100%)",
+          color: "white",
+        }}
+      >
+        {/* Left Image Section */}
+        <div className="w-full md:w-1/2 flex justify-center">
+          <img src={coding} alt="Coding" className="w-full max-w-[300px] md:max-w-[535px] h-auto" />
         </div>
-        </section>
-);
+
+        {/* Right Text Section */}
+        <div className="w-full md:w-1/2 text-center md:text-left px-4 md:px-0">
+          <h3 className="text-xl md:text-2xl font-bold mb-4">Benefits of Joining Beta</h3>
+          <ul className="text-base md:text-lg text-gray-200 mb-6 space-y-2">
+            <li>1. Early Access to Cutting-Edge Technology</li>
+            <li>2. Opportunity to Shape the Platform</li>
+            <li>3. Exclusive Features and Updates</li>
+            <li>4. Community Engagement</li>
+            <li>5. Personalized Support</li>
+          </ul>
+          <button className="bg-white text-blue-500 font-semibold py-2 px-4 md:px-6 rounded-full hover:bg-gray-200">
+            Join our Beta Program
+          </button>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function FAQSection() {
@@ -341,47 +358,51 @@ function FAQSection() {
 function ContactSection() {
   return (
     <section className="bg-black text-white w-full flex justify-around px-4 py-16">
-      <div className="w-full md:flex md:justify-between">
+      <div className="w-full md:flex md:justify-between px-4 py-16">
         {/* Contact Form */}
-        <div className="bg-gray-900 p-8 rounded-lg md:w-1/2">
-          <h2 className="text-2xl font-bold mb-4">Contact Our <span className="text-purple-500 italic">Team</span></h2>
+        <div className="bg-gray-900 w-[676px] h-[674px] justify-center p-8 rounded-lg md:w-1/2">
+          <h2 className="text-2xl flex justify-center font-bold mb-4">
+            Contact Our <span className="text-purple-500 italic">Team</span>
+          </h2>
           <form>
             <div className="flex flex-col space-y-4">
+              <h2 className="w-[298px] mb-4">
+                First name<span className="text-red-400">*</span>
+              </h2>
               <div className="flex gap-4">
                 <input
                   type="text"
                   placeholder="John"
-                  className="w-full p-2 bg-gray-800 text-white rounded"
+                  className="w-[298px] p-2 bg-gray-800 text-white rounded"
                   required
                 />
                 <input
                   type="text"
                   placeholder="Doe"
-                  className="w-full p-2 bg-gray-800 text-white rounded"
+                  className="w-[298px] p-2 bg-gray-800 text-white rounded"
                   required
                 />
               </div>
               <input
-              
-                type="Email"
+                type="email"
                 placeholder="Email Address"
-                className="w-full p-2 bg-gray-800 text-white rounded"
+                className="w-[616px] p-2 bg-gray-800 text-white rounded"
                 required
               />
               <input
-                type="Phone Number"
+                type="tel"
                 placeholder="Phone Number"
-                className="w-full p-2 bg-gray-800 text-white rounded"
+                className="w-[616px] p-2 bg-gray-800 text-white rounded"
                 required
               />
               <textarea
                 placeholder="Type your Message..."
-                className="w-full p-2 bg-gray-800 text-white rounded h-32"
+                className="w-[616px] h-[200px] p-2 bg-gray-800 text-white rounded"
                 required
               ></textarea>
               <button
                 type="submit"
-                className="bg-gradient-to-r from-blue-400 to-purple-500 text-white flex justify-center items-end py-2 px-4 rounded-full mt-4 hover:opacity-90"
+                className="bg-gradient-to-r from-blue-400 to-purple-500 text-white h-[40px] w-1/4 text-center py-2 rounded-full hover:opacity-90 mt-4 self-end"
               >
                 Sign Up
               </button>
@@ -390,7 +411,7 @@ function ContactSection() {
         </div>
 
         {/* Support Information */}
-        <div className="mt-8  md:mt-0 md:w-1/2 md:pl-8">
+        <div className="mt-8 md:mt-0 md:w-1/2 md:pl-8">
           <h3 className="text-xl font-semibold mt-28">Looking for Support?</h3>
           <p className="text-gray-400">
             Please feel free to contact us for any queries you may have. Our team is here to assist you and address any questions, concerns, or feedback you may have for us.
@@ -401,6 +422,8 @@ function ContactSection() {
     </section>
   );
 }
+
+
 
 function SocialMedia() {
   return (
@@ -425,14 +448,12 @@ function SocialMedia() {
 
         {/* Twitter Box */}
         <div className="w-full sm:w-[360px] md:w-[320px] lg:w-[360px] h-[360px] bg-gray-900 flex flex-col items-center justify-center rounded-lg shadow-lg text-center">
-          <div className="bg-white rounded-full p-2 mb-4 flex items-center justify-center">
+          
             <img src={twitter} alt="Twitter" className="w-16 h-16 mb-4" />
+            <p className="text-white text-lg font-semibold mb-2">Twitter</p>
+          <button className="bg-black  text-white px-6 py-2 rounded-full hover:opacity-90">Follow on Twitter</button>
           </div>
-          <p className="text-white text-lg font-semibold mb-2">Twitter</p>
-          <button className="bg-gradient-to-r from-black to-white text-white px-6 py-2 rounded-full hover:opacity-90">Follow on Twitter</button>
         </div>
-
-      </div>
     </section>
   );
 }

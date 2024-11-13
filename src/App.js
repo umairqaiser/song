@@ -180,6 +180,7 @@ function IntroductionSection() {
 
 
 
+
 function FeatureSection() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRef = useRef(null);
@@ -192,43 +193,68 @@ function FeatureSection() {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
 
-        // Calculate scroll progress as a percentage
-        const progress = ((scrollTop - sectionTop) / (sectionHeight - window.innerHeight)) * 10;
-        setScrollProgress(Math.max(0, Math.min(progress, 50))); // Clamp between 0 and 100
+        // Calculate scroll progress as a percentage with smoother transition
+        const progress = ((scrollTop - sectionTop) / (sectionHeight - window.innerHeight)) * 100;
+        setScrollProgress(Math.max(0, Math.min(progress, 100))); // Clamp between 0 and 100
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleSmoothScroll = () => {
+      requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener('scroll', handleSmoothScroll);
+    return () => window.removeEventListener('scroll', handleSmoothScroll);
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative flex items-center bg-black text-white px-4 md:px-8 py-10 md:py-16 min-h-screen">
-      {/* Left Side - Feature Text */}
-      <div className="flex-1 text-center md:text-left">
-        <h3 className="text-[24px] font-bold text-purple-500 mb-4">AI-Driven Rhyme Assistant</h3>
-        <p className="text-sm md:text-base text-gray-200 leading-relaxed">
-          The AI-Driven Rhyme Assistant will be able to intelligently analyse the context of the lyrics being written by the user and provide dynamic and contextually relevant alternative lyric suggestions in the authentic voice of the user. It will be able to provide aid beyond simple phonetic rhyme matches ensuring the suggested rhymes contribute to the coherence and meaning of the lyrics. It will also be able to analyse bars and verses and offer options of changes that will make the syllable count, structure and rhyme scheme to make the lyrics more optimal and refined. It will underline the area of suggestion and once clicked, will take you directly to the suggestion and reason why this alternative is better. The goal of this feature is to accelerate the lyric writing process, reducing potential creative blocks and inspiring continuous output.
+    <section ref={sectionRef} className="relative flex items-start bg-black text-white px-4 md:px-8 py-10 md:py-16 min-h-screen">
+      
+      {/* Left Side - Text and Image */}
+      <div className="flex-1 flex flex-col items-start text-left">
+      <h3 className="text-[20px] font-bold text-purple-500 mb-4">AI-Driven Rhyme Assistant</h3>
+        <p className="text-sm md:text-base w-[492px] text-gray-200 leading-relaxed mb-6">
+          The AI-Driven Rhyme Assistant will be able to intelligently analyse the context of the lyrics being written by the user and provide dynamic and contextually relevant alternative lyric suggestions in the authentic voice of the user. It will be able to provide aid beyond simple phonetic rhyme matches ensuring the suggested rhymes contribute to the coherence and meaning of the lyrics. It will also be able to analyse bars and verses and offer options of changes that will make the syllable count, structure and rhyme scheme to make the lyrics more optimal and refined.
         </p>
+        <div className="w-[300px] md:w-[490px] ">
+          <img src={assistant} alt="Assistant" className="w-full h-auto rounded-lg shadow-lg" />
+        </div>
       </div>
 
       {/* Center - Vertical Gradient Line with Moving Dot */}
       <div className="relative flex flex-col items-center h-[400px] w-[2px] mx-10 bg-gradient-to-b from-blue-400 to-purple-400">
         <div
-          style={{ top: `${scrollProgress}%` }}
+          style={{ top: `${scrollProgress}%`, transition: 'top 0.1s ease-out' }}
           className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-500 rounded-full shadow-md"
         ></div>
       </div>
 
-      {/* Right Side - Assistant Image */}
-      <div className="flex-1 flex justify-center">
-        <div className="w-[300px] md:w-[492px] h-auto">
-          <img src={assistant} alt="Assistant" className="w-full h-auto rounded-lg shadow-lg" />
+      {/* Right Side - Text and Image */}
+      <div className="flex-1 flex flex-col items-start text-left">
+      <div className="w-[300px] md:w-[492px] h-auto">
+          <img src={prompt} alt="Prompt" className="w-full h-auto rounded-lg shadow-lg" />
         </div>
+        <h3 className="text-[24px] font-bold text-purple-500 mb-4">Prompt-Based Image Assistant</h3>
+        <p className="text-sm md:text-base text-gray-200 leading-relaxed mb-6">
+          The Prompt-Based Image Assistant enables users to generate images based on specific descriptions and prompts. Leveraging AI technology, it provides quick and unique visuals tailored to users' needs, sparking creativity and enhancing visual storytelling.
+        </p>
+        
       </div>
+      
+        <div
+          style={{ top: `${scrollProgress}%`, transition: 'top 0.10s ease-in' }}
+          className="relative flex flex-col items-center h-[400px] w-[2px] mx-10 left-1/2 transform -translate-x-1/2  bg-blue-500 rounded-full shadow-md"
+        ></div>
+     
+      
     </section>
   );
 }
+
+
+
+
+
 
 
 
